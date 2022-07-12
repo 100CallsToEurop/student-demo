@@ -68,14 +68,14 @@ app.post('/lesson_01/api/videos', (req: Request, res: Response) => {
 
 app.delete('/lesson_01/api/videos/:id',(req: Request, res: Response)=>{
     const id: number = +req.params.id;
-    videos.forEach((v, i)=>{
-        if(v.id === id){
+       for(let i = 0; i < videos.length; i++){
+        if(videos[i].id === id) {
             videos.splice(i, 1)
             res.status(204).send('No Content')
+            return
         }
-        res.status(404).send('Not found')
-    })
-
+    }
+    res.status(404).send('Not found')
 })
 
 app.put('/lesson_01/api/videos/:id',(req: Request, res: Response)=>{
