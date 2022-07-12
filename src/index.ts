@@ -37,16 +37,16 @@ const app = express()
 app.use(cors())
 app.use(parserMiddleware)
 
-app.get('/videos', (req: Request, res: Response)=>{
+app.get('/lesson_01/api/videos', (req: Request, res: Response)=>{
     res.status(200).send(videos)
 })
-app.get('/videos/:videoId', (req: Request, res: Response) => {
+app.get('/lesson_01/api/videos/:videoId', (req: Request, res: Response) => {
     const id: number = +req.params.videoId;
     const video: Video | undefined = videos.find(v => v.id === id)
     if(!video) res.status(404).send('Not found')
     res.status(200).send(video)
 })
-app.post('/videos', (req: Request, res: Response) => {
+app.post('/lesson_01/api/videos', (req: Request, res: Response) => {
     if(!req.body.title) {
         const errorMessage: APIErrorResult = {
             errorsMessages: [{
@@ -66,7 +66,7 @@ app.post('/videos', (req: Request, res: Response) => {
        res.status(201).send(newVideo)
 })
 
-app.delete('/videos/:id',(req: Request, res: Response)=>{
+app.delete('/lesson_01/api/videos/:id',(req: Request, res: Response)=>{
     const id: number = +req.params.id;
     videos.forEach((v, i)=>{
         if(v.id === id){
@@ -78,7 +78,7 @@ app.delete('/videos/:id',(req: Request, res: Response)=>{
 
 })
 
-app.put('/videos/:id',(req: Request, res: Response)=>{
+app.put('/lesson_01/api/videos/:id',(req: Request, res: Response)=>{
     if(!req.body.title) {
         const errorMessage: APIErrorResult = {
             errorsMessages: [{
