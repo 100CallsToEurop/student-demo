@@ -47,7 +47,17 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
     res.status(200).send(video)
 })
 app.post('/videos', (req: Request, res: Response) => {
-    if(!req.body.title) {
+    if(req.body.title) {
+        const titleReq: CreateUpdateVideoInputModel = {title: req.body.title}
+        const newVideo: Video = {
+            id: +(new Date()),
+            title: titleReq.title,
+            author: 'it-incubator.eu'
+        }
+        videos.push(newVideo)
+        res.status(201).send(newVideo)
+    }
+    else{
         const errorMessage: APIErrorResult = {
             errorsMessages: [{
                 message: "Field title not found",
@@ -56,14 +66,6 @@ app.post('/videos', (req: Request, res: Response) => {
         }
         res.status(400).send(errorMessage)
     }
-    const titleReq: CreateUpdateVideoInputModel = { title: req.body.title}
-    const newVideo: Video = {
-       id: +(new Date()),
-          title: titleReq.title,
-           author: 'it-incubator.eu'
-       }
-       videos.push(newVideo)
-       res.status(201).send(newVideo)
 })
 
 app.delete('/videos/:id',(req: Request, res: Response)=>{
@@ -79,7 +81,17 @@ app.delete('/videos/:id',(req: Request, res: Response)=>{
 })
 
 app.put('/videos/:id',(req: Request, res: Response)=>{
-    if(!req.body.title) {
+    if(req.body.title) {
+        const id: number = +req.params.id;
+        const titleReq: CreateUpdateVideoInputModel = {title: req.body.title}
+        const video: Video | undefined = videos.find(v => v.id === id)
+        if (video) {
+            video.title = titleReq.title
+            res.status(204).send(video)
+        }
+        res.status(404).send('NotFound')
+    }
+    else{
         const errorMessage: APIErrorResult = {
             errorsMessages: [{
                 message: "Field title not found",
@@ -88,14 +100,6 @@ app.put('/videos/:id',(req: Request, res: Response)=>{
         }
         res.status(400).send(errorMessage)
     }
-    const id: number = +req.params.id;
-    const titleReq: CreateUpdateVideoInputModel = { title: req.body.title }
-    const video: Video | undefined = videos.find(v => v.id === id)
-    if(video){
-        video.title = titleReq.title
-        res.status(204).send(video)
-    }
-    res.status(404).send('NotFound')
 
 })
 
