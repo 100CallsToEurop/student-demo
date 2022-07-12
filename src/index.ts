@@ -49,7 +49,13 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
 app.post('/videos', (req: Request, res: Response) => {
     if(req.body.title) {
         if(req.body.title.length > 40){
-            res.status(400).send("The field Title must be a string or array type with a maximum length of '40'.")
+            const errorMessage: APIErrorResult = {
+                errorsMessages: [{
+                    message: "Field title not found",
+                    field: "title"
+                }]
+            }
+            res.status(400).send(errorMessage)
         }
         const titleReq: CreateUpdateVideoInputModel = {title: req.body.title}
         const newVideo: Video = {
@@ -86,7 +92,13 @@ app.delete('/videos/:id',(req: Request, res: Response)=>{
 app.put('/videos/:id',(req: Request, res: Response)=>{
     if(req.body.title) {
         if(req.body.title.length > 40){
-            res.status(400).send("The field Title must be a string or array type with a maximum length of '40'.")
+            const errorMessage: APIErrorResult = {
+                errorsMessages: [{
+                    message: "Field title not found",
+                    field: "title"
+                }]
+            }
+            res.status(400).send(errorMessage)
         }
         const id: number = +req.params.id;
         const titleReq: CreateUpdateVideoInputModel = {title: req.body.title}
